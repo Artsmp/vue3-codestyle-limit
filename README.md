@@ -1,16 +1,65 @@
-# Vue 3 + TypeScript + Vite
+## eslint 和 prettier 项目规范配置
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+1. `npm install --save-dev --save-exact prettier`
+2. `echo {}> .prettierrc.json`
+3. `npm install --save-dev eslint eslint-plugin-vue eslint-config-prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin`
 
-## Recommended IDE Setup
+在 package.json 文件中添加：
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+```json
+{
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.vue,.tsx,.jsx --ignore-path .gitignore --fix src",
+    "format": "prettier .  --write"
+  }
+}
+```
 
-## Type Support For `.vue` Imports in TS
+添加 eslintrc.js 文件：
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+```js
+module.exports = {
+  env: {
+    node: true,
+    browser: true,
+    es2021: true,
+    // 开启setup语法糖环境
+    'vue/setup-compiler-macros': true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:vue/vue3-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+  // 新增，解析vue文件
+  parser: 'vue-eslint-parser',
+  // 支持ts的最新语法
+  parserOptions: {
+    ecmaVersion: 'latest',
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module',
+  },
+  // 添加vue和@typescript-eslint插件，增强eslint的能力
+  plugins: ['vue', '@typescript-eslint'],
+  rules: {
+    // override/add rules settings here, such as:
+    // 'vue/no-unused-vars': 'error'
+    'vue/require-default-prop': 'off',
+  },
+};
+```
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+在 .prettierrc.json 文件中添加：
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+```json
+{
+  "singleQuote": true,
+  "semi": true,
+  "printWidth": 80
+}
+```
+
+## 提交规范约束
+
+`pi husky lint-staged -D`
