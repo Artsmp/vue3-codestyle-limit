@@ -60,6 +60,30 @@ module.exports = {
 }
 ```
 
-## 提交规范约束
+## 提交时代码自动格式化校验规范约束
 
-`pi husky lint-staged -D`
+1. `pi husky lint-staged -D`
+
+2. 在 package.json 中添加内容：
+
+```json
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,vue,ts,jsx,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{html,css,less,scss,md}": [
+      "prettier --write"
+    ]
+  }
+```
+
+3. `pnpm prepare`
+4. `pnpx husky add .husky/pre-commit "npx --no-install lint-staged"`
+
+## 提交消息规范
+
+按文档进行操作即可：https://github.com/conventional-changelog/commitlint
